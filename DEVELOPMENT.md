@@ -29,22 +29,22 @@ O **JáTá (marcado)** é uma plataforma de agendamento de serviços desenvolvid
 - [ ] Configurar scripts de build e dev
 
 #### 1.2 Configuração de Ferramentas
-- [ ] Setup ESLint e Prettier
-- [ ] Configurar TypeScript
-- [ ] Setup Husky para git hooks
-- [ ] Configurar commitlint
+- [✅] Setup ESLint e Prettier
+- [✅] Configurar TypeScript
+- [✅] Setup Husky para git hooks
+- [✅] Configurar commitlint
 
 #### 1.3 Configuração de Banco de Dados
-- [ ] Setup PostgreSQL com Docker
-- [ ] Configurar Prisma ORM
-- [ ] Definir schema inicial
-- [ ] Configurar migrations
+- [✅] Setup PostgreSQL com Docker
+- [✅] Configurar Prisma ORM
+- [✅] Definir schema inicial
+- [✅] Configurar migrations
 
 ### Fase 2: Desenvolvimento dos Packages
 
 #### 2.1 Package `@jata/config`
-- [ ] Configurações compartilhadas de TypeScript
-- [ ] Configurações de ESLint e Prettier
+- [✅] Configurações compartilhadas de TypeScript
+- [✅] Configurações de ESLint e Prettier
 - [ ] Configurações de Jest
 
 #### 2.2 Package `@jata/db`
@@ -54,10 +54,10 @@ O **JáTá (marcado)** é uma plataforma de agendamento de serviços desenvolvid
 - [ ] Seeds para dados de teste
 
 #### 2.3 Package `@jata/utils`
-- [ ] Funções utilitárias comuns
-- [ ] Helpers de validação
-- [ ] Funções de formatação
-- [ ] Utilitários de data/hora
+- [✅] Funções utilitárias comuns
+- [✅] Helpers de validação
+- [✅] Funções de formatação
+- [✅] Utilitários de data/hora
 
 #### 2.4 Package `@jata/ui`
 - [ ] Componentes base (Button, Input, etc.)
@@ -241,4 +241,73 @@ docker-compose up -d
 
 *Última atualização: 11/08*
 *Versão: 1.0.0* 
+
+
+```
+
+## **Como o Husky funciona:**
+
+### **1. Git Hooks**
+O Git tem "hooks" (ganchos) que são scripts que rodam automaticamente em momentos específicos:
+
+- **pre-commit**: Antes de fazer commit
+- **post-commit**: Depois de fazer commit  
+- **pre-push**: Antes de fazer push
+- **pre-merge-commit**: Antes de fazer merge
+
+### **2. Exemplo Prático**
+
+**Sem Husky:**
+```bash
+# Você pode fazer commit de qualquer coisa
+git add .
+git commit -m "feat: nova funcionalidade"
+# Mesmo que o código tenha erros de linting!
+```
+
+**Com Husky:**
+```bash
+git add .
+git commit -m "feat: nova funcionalidade"
+# Husky executa automaticamente:
+# 1. pnpm lint (verifica erros de código)
+# 2. pnpm test (roda testes)
+# 3. pnpm type-check (verifica tipos TypeScript)
+# 
+# Se algum desses falhar, o commit é CANCELADO!
+```
+
+### **3. Configuração típica do Husky**
+
+```json
+<code_block_to_apply_changes_from>
+```
+
+### **4. Benefícios Reais**
+
+✅ **Impede commits com erros**
+✅ **Força testes antes do push**
+✅ **Mantém qualidade automática**
+✅ **Evita que código quebrado vá para produção**
+
+### **5. Exemplo de uso no dia a dia**
+
+```bash
+# Você tenta fazer commit
+git commit -m "feat: adiciona botão"
+
+# Husky executa automaticamente:
+# ❌ ESLint encontrou 3 erros
+# ❌ Commit CANCELADO
+# 
+# Você corrige os erros e tenta novamente:
+git commit -m "feat: adiciona botão"
+# ✅ Todos os checks passaram
+# ✅ Commit realizado com sucesso
+```
+
+**Em resumo:** Husky é como um "guardião" que protege seu repositório de código ruim, executando verificações automáticas antes de cada operação git.
+
+Quer que eu configure o Husky no seu projeto?
+```
 

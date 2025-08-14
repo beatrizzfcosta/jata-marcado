@@ -10,15 +10,6 @@
     "type-check": "turbo run type-check",
     "prepare": "husky"
   },
-  "lint-staged": {
-    "*.{ts,tsx}": [
-      "eslint --fix",
-      "prettier --write"
-    ],
-    "*.{md,json}": [
-      "prettier --write"
-    ]
-  },
   "devDependencies": {
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",

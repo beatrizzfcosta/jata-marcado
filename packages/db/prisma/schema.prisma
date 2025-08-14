@@ -13,3 +13,122 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+// ========================================
+// ENUMS
+// ========================================
+
+enum UserRole {
+  MASTER
+  ADMIN
+  COLLABORATOR
+}
+
+// ========================================
+// MODELOS DO SISTEMA
+// ========================================
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      UserRole
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relacionamentos
+  companies     CompanyUser[]
+  bookings      Booking[]
+  availability  Availability[]
+  companiesCreated Company[] @relation("CompanyCreator") // Relacionamento reverso para empresas criadas
+
+  @@map("users")
+}
+
+model Company {
+  id             String   @id @default(cuid())
+  name           String
+  createdBy      String   @map("created_by")
+  primaryColor   String?  @map("primary_color")
+  secondaryColor String?  @map("secondary_color")
+  logoUrl        String?  @map("logo_url")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  // Relacionamentos
+  createdByUser  User           @relation("CompanyCreator", fields: [createdBy], references: [id])
+  users          CompanyUser[]
+  activities     Activity[]
+
+  @@map("companies")
+}
+
+model CompanyUser {
+  id        String   @id @default(cuid())
+  companyId String   @map("company_id")
+  userId    String   @map("user_id")
+  isAdmin   Boolean  @default(false) @map("is_admin")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  // Relacionamentos
+  company   Company  @relation(fields: [companyId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@unique([companyId, userId])
+
+  @@map("company_users")
+}
+
+model Activity {
+  id              String   @id @default(cuid())
+  companyId       String   @map("company_id")
+  title           String
+  description     String?
+  durationMinutes Int      @map("duration_minutes")
+  price           Decimal  @db.Decimal(10, 2)
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  // Relacionamentos
+  company         Company  @relation(fields: [companyId], references: [id])
+  bookings        Booking[]
+
+  @@map("activities")
+}
+
+model Booking {
+  id            String   @id @default(cuid())
+  activityId    String   @map("activity_id")
+  userId        String   @map("user_id")
+  customerName  String   @map("customer_name")
+  customerEmail String   @map("customer_email")
+  customerPhone String?  @map("customer_phone")
+  date          DateTime @db.Date
+  time          DateTime @db.Time
+  status        String
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  // Relacionamentos
+  activity      Activity @relation(fields: [activityId], references: [id])
+  user          User     @relation(fields: [userId], references: [id])
+
+  @@map("bookings")
+}
+
+model Availability {
+  id           String   @id @default(cuid())
+  userId       String   @map("user_id")
+  date         DateTime @db.Date
+  isAvailable  Boolean  @map("is_available")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  // Relacionamentos
+  user         User     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, date])
+
+  @@map("availability")
+}

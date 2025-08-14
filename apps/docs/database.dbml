@@ -1,0 +1,68 @@
+Enum user_role {
+  MASTER
+  ADMIN
+  COLLABORATOR
+}
+
+Table users {
+  id uuid [pk]
+  name varchar
+  email varchar [unique, not null]
+  password varchar
+  role user_role
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table companies {
+  id uuid [pk]
+  name varchar [not null]
+  created_by uuid [ref: > users.id]
+  primary_color varchar [note: 'Ex: #123456']
+  secondary_color varchar [note: 'Ex: #abcdef']
+  logo_url text [note: 'Caminho para PNG da empresa']
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table company_users {
+  id uuid [pk]
+  company_id uuid [ref: > companies.id]
+  user_id uuid [ref: > users.id]
+  is_admin boolean [default: false]
+  created_at timestamp
+}
+
+Table activities {
+  id uuid [pk]
+  company_id uuid [ref: > companies.id]
+  title varchar [not null]
+  description text
+  duration_minutes int
+  price decimal(10,2)
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table bookings {
+  id uuid [pk]
+  activity_id uuid [ref: > activities.id]
+  user_id uuid [ref: > users.id]
+  customer_name varchar
+  customer_email varchar
+  customer_phone varchar
+  date date
+  time time
+  status varchar
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table availability {
+  id uuid [pk]
+  user_id uuid [ref: > users.id]
+  date date
+  is_available boolean
+  created_at timestamp
+  updated_at timestamp
+} 
