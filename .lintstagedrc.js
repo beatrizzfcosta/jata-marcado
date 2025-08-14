@@ -1,9 +1,9 @@
 module.exports = {
   '*.{ts,tsx}': [
-    'eslint --fix',
+    'eslint --fix --ignore-pattern "node_modules/**"',
     'prettier --write',
   ],
   '*.{md,json}': [
-    'prettier --write',
+    'prettier --write --ignore-path .gitignore',
   ],
 }; 
