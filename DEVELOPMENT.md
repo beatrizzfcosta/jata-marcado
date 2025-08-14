@@ -23,9 +23,9 @@ O **JáTá (marcado)** é uma plataforma de agendamento de serviços desenvolvid
 ### Fase 1: Setup Inicial do Projeto
 
 #### 1.1 Configuração do Monorepo
-- [ ] Inicializar projeto com Turborepo
-- [ ] Configurar pnpm workspaces
-- [ ] Estruturar diretórios apps/ e packages/
+- [✅] Inicializar projeto com Turborepo
+- [✅] Configurar pnpm workspaces
+- [✅] Estruturar diretórios apps/ e packages/
 - [ ] Configurar scripts de build e dev
 
 #### 1.2 Configuração de Ferramentas
@@ -242,27 +242,3 @@ docker-compose up -d
 *Última atualização: 11/08*
 *Versão: 1.0.0* 
 
-### 💡 Prompt para geração de docker-compose (Postgres + pgAdmin)
-
-> Use este prompt sempre que precisar criar ou regenerar o `docker-compose.yml` para o banco de dados e interface de administração.
-
-**Prompt dinâmico:**
-
-> Crie um arquivo `docker-compose.yml` com `version: "3.9"`.  
-> Ele deve conter:  
-> - Um serviço `db` com a imagem `postgres:{versao_postgres}`, usando as variáveis de ambiente:  
-> ```
-> POSTGRES_USER={usuario_postgres}
-> POSTGRES_PASSWORD={senha_postgres}
-> POSTGRES_DB={nome_banco}
-> ```
-> e mapeando a porta `{porta_postgres_local}:5432`.  
-> - Um serviço `pgadmin` com a imagem `dpage/pgadmin4`, usando as variáveis:  
-> ```
-> PGADMIN_DEFAULT_EMAIL={email_pgadmin}
-> PGADMIN_DEFAULT_PASSWORD={senha_pgadmin}
-> ```
-> e mapeando a porta `{porta_pgadmin_local}:80`.  
->  
-> Substitua os valores entre `{}` pelos valores que eu fornecer.  
-> Retorne o resultado formatado em YAML pronto para ser salvo como `docker-compose.yml`.
